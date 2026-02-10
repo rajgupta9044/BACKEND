@@ -6,7 +6,7 @@ const app=express();
 
 
     
-        //Routing     //Callback function 
+         //Routing     //Callback function 
 app.use("/about/:id",(req,res)=>{
     res.send("I am your About pagee");
 });
