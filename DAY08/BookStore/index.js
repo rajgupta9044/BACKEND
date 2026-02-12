@@ -14,8 +14,15 @@ const bookStore=[
 app.use(express.json());
 
 app.get("/book",(req,res)=>{
+    
 
-    res.send(bookStore);
+    //STORES THE INFORMATION ABOUT THE PARAMETER
+    console.log(req.query);
+
+    const book=bookStore.filter(info=>info.author===req.query.author);
+    res.send(book);
+
+    // res.send(bookStore);
 
 })
 
@@ -71,6 +78,8 @@ app.delete("/book/:id",(req,res)=>{
     bookStore.splice(index,1);
     res.send("Successfully deleted");
 })
+
+
 
 app.listen(5000,()=>{
     console.log("Listening at port 5000");
