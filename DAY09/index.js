@@ -38,6 +38,7 @@ const FoodMenu = [
 ];
 
 
+
 ///USER KA JO BHI FOOD ADD HOGA VO ISME JAYEGA
 const AddtoCart=[];
 
@@ -94,7 +95,67 @@ app.patch("/admin",(req,res)=>{
   
 })
 
+ // USER FUNCTIONALITIES
 
+//ADD TO CART FUNCTIONALITY
+
+app.post("/user/:id",(req,res)=>{
+    const id= Number(req.params.id);
+
+    const fooditem =FoodMenu.find(info=>info.id===id);
+
+    if(fooditem){
+        AddtoCart.push(fooditem);
+        res.status (200).send("Added to CArt Succesfully");
+    }
+
+    else{
+        res.send("item not exist");
+    }
+
+})
+
+//DELETE FROM THE CART
+
+app.delete("/user/:id",(req,res)=>{
+    const id= Number(req.params.id);
+    const index=AddtoCart.findIndex(info=>info.id==id);
+
+    if(index!=-1){
+        AddtoCart.splice(index,1);
+        res.send("ITEM REMOVED SUCCESSFULLY")
+    }
+    else{
+        res.send("Item not present in Cart");
+    }
+})
+
+
+//LOOK AT THE CART
+
+app.get("/user",(req,res)=>{
+    
+    if(AddtoCart.length===0)
+        res.send("Item not present in Cart");
+
+    else
+    res.send(AddtoCart);
+})
+
+
+
+app.get("/dummy",(req,res)=>{
+
+    try{
+    // JSON.parse("Invalid JSon");
+    throw new Error("Broken");
+    res.send("HELLO");
+    }
+    catch(err){
+        res.send("Some error Occured"+err);
+    }
+
+})
 
 app.listen(4000,()=>{
     console.log("Listening at port Number 4000");
