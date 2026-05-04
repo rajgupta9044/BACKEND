@@ -12,13 +12,18 @@ const authRouter=require("./routes/auth");
 const userRouter=require("./routes/user");
 const commentRouter=require("./routes/comment");
 const redisClient=require("./config/redis")
+const rateLimiter=require("./middleware/rateLimiter");
 
 
 app.use(express.json());
 app.use(cookieParser())
+
+app.use(rateLimiter);
+
 app.use("/auth",authRouter);
 app.use("/user",userRouter);
 app.use("/comment",commentRouter);
+
 
   
     

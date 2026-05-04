@@ -12,7 +12,7 @@ authRouter.post("/register", async (req,res)=>{
     try{
 
         // Validate kya uske andar firstName
-        validUser(req.body);
+        // validUser(req.body);
         
         //  converting password into hashing
        req.body.password = await bcrypt.hash(req.body.password,10);
