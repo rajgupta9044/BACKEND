@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <h1>ChatApp</h1>
+
+    <input type="text" placeholder="Enter room number" id='roomNumber'>
+    <button onClick="JoinRoom()" style="margin-top: 5px ; margin-bottom:25px " >Join Room</button>
+
+    <div id="MessageDisplay" style="height:50vh ;width:50vw ;color:rgb(12, 14, 5) ;background-color: bisque; margin-bottom:20px"></div>
+
+    <input type="text" placeholder="Enter your message" id ="message" style="height:10vh ;width:50vw ">
+
+    <button onClick="SendMessage()" >Send</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+
+ const message = document.getElementById('MessageDisplay');
+ const messageInput=document.getElementById('message');
+ let roomId= null;
+
+
+//  function SendMessage(){
+
+//    const msg= messageInput.value;
+//    messageInput.value="";
+
+//    //client send the message to the socket server
+//    socket.emit('message',msg);
+
+//    const element=document.createElement('div');
+//    element.textContent=msg;
+//    element.style.textAlign="right";
+//    message.appendChild(element);
+
+//  }
+
+
+ function SendMessage(){
+
+   const msg= messageInput.value;
+   messageInput.value="";
+
+   //client send the message to the socket server
+   socket.emit('message',{room:roomId , msg:msg});
+
+   const element=document.createElement('div');
+   element.textContent=msg;
+   element.style.textAlign="right";
+   message.appendChild(element);
+
+ }
+
+
+
+ function JoinRoom(){
+
+
+    const roomNum=document.getElementById('roomNumber').value;
+    document.getElementById('roomNumber').value="";  
+    roomId=roomNum;
+    socket.emit('join-room',roomNum);
+ }
+
+
+ //client listen to the new message from the socket server
+   socket.on('new-message',(data)=>{
+      
+    const element=document.createElement("div");
+    element.textContent=data;
+    message.appendChild(element);
+
+   })
+
+
+//   socket.on('connect',()=>{
+//     console.log(socket.id);
+//   })
+
+</script>
+
+</body>
+</html>
